@@ -98,20 +98,22 @@ export const TodoList = () => {
                             id='complete' 
                             name='complete' 
                             value={task.complete} 
-                            onChange={(e) => checkTaskHandler(e, index)} />
+                            onChange={(e) => checkTaskHandler(e, index)} 
+                            className='m-1'/>
 
                         {
                             toggle==index?
                             
-                            <div>
+                            <div className='flex'>
                                 <input
                                     type='text'
                                     name='name'
                                     value={val.name}
                                     placeholder='Enter a task'
                                     onChange={changeHandler}
+                                    className='mx-2'
                                 /><br />                                
-                                <button style={{ margin: "20px" }}  onClick={() => {saveHandler()}}>save </button>
+                                <button className='p-2 bg-pink-300 rounded-md' onClick={() => {saveHandler()}}>Save </button>
                                 <button style={{ margin: "20px" }}  onClick={()=>(setToggle(null))}>Cancel</button>
                             </div>
 
