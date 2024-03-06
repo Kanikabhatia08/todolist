@@ -8,7 +8,6 @@ export const TodoList = () => {
     }); //name : input tag
     const [toggle, setToggle] = useState()
 
-    const [save, setSave] = useState('')
     console.log('toggle', toggle)
 
     const [tasks, setTasks] = useState([]) // all the tasks
@@ -60,6 +59,22 @@ export const TodoList = () => {
         ))
     }
 
+    function editHandler(index){
+        setToggle(index);
+        setVal({ ...tasks[index] });
+        // console.log(setVal)
+    }
+
+    const saveHandler = () => {
+        if (val.name !== "") {
+            setTasks(tasks.map((task, i) => i === toggle ? val : task));
+            // console.log(toggle)
+            setToggle(null);
+            setVal({ name: "", complete: false });
+        }
+        return val
+    }
+
 
     return (
         <div className=''>
@@ -77,30 +92,42 @@ export const TodoList = () => {
             </form>
             {
                 tasks.map((task, index) => (
-                    <div key={index} className=''>
-                        <input type='checkbox' id='complete' name='complete' value={task.complete} onChange={(e) => checkTaskHandler(e, index)} />
-                        <label htmlFor='checked'>{task.name} </label>
+                    <div key={index} className='flex border-2'>
+                        <input 
+                            type='checkbox' 
+                            id='complete' 
+                            name='complete' 
+                            value={task.complete} 
+                            onChange={(e) => checkTaskHandler(e, index)} />
 
                         {
                             toggle==index?
-                            "": 
+                            
                             <div>
-                                <button style={{ margin: "20px" }} onClick={() => {setToggle(index)}}>Edit </button>
+                                <input
+                                    type='text'
+                                    name='name'
+                                    value={val.name}
+                                    placeholder='Enter a task'
+                                    onChange={changeHandler}
+                                /><br />                                
+                                <button style={{ margin: "20px" }}  onClick={() => {saveHandler()}}>save </button>
+                                <button style={{ margin: "20px" }}  onClick={()=>(setToggle(null))}>Cancel</button>
                             </div>
-                        }             
-                        {
-                            toggle==index?
-                            <div>
-                                <button style={{ margin: "20px" }} onClick={() => { setToggle() }}>Save </button>
-                            </div>
-                            :''
-                        }
 
+                            :
+                            <div>
+                                <label htmlFor='complete'>{task.name}</label>
+                                <button style={{ margin: "20px" }} onClick={() => { editHandler(index) }}>Edit</button>
+
+                            </div>
+                        }   
                         <button onClick={() => deleteTaskHandler(index)}>Delete</button>
+
+
                     </div>
                 ))
             }
         </div>
-
     )
 }
