@@ -9,6 +9,7 @@ export const TodoList = () => {
     const [toggle, setToggle] = useState()
 
     console.log('toggle', toggle)
+    const [editName, setEditName] = useState()
 
     const [tasks, setTasks] = useState([]) // all the tasks
 
@@ -102,14 +103,14 @@ export const TodoList = () => {
                             className='m-1'/>
 
                         {
-                            toggle==index?
+                            toggle === index?
                             
                             <div className='flex'>
                                 <input
                                     type='text'
                                     name='name'
                                     value={val.name}
-                                    placeholder='Enter a task'
+                                    placeholder='Edit task'
                                     onChange={changeHandler}
                                     className='mx-2'
                                 /><br />                                
