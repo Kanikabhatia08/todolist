@@ -1,3 +1,3 @@
 # Todo List
-- Tech Stack: ReactJS
-- Flow: Enter a task -> task added to list -> update, save and delete a particular task
+- Tech Stack: ReactJS, TailwindCSS
+- Flow: Enter a task -> task added to list -> update, save/cancel and delete a particular task

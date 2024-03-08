@@ -87,8 +87,9 @@ export const TodoList = () => {
                     value={val.name}
                     placeholder='Enter a task'
                     onChange={changeHandler}
+                    className='m-1'
                 /><br />
-                <button>Add Task</button>
+                <button className=' bg-pink-500 rounded-md p-2 '>Add Task</button>
 
             </form>
             {
@@ -108,8 +109,8 @@ export const TodoList = () => {
                             <div className='flex'>
                                 <input
                                     type='text'
-                                    name='name'
-                                    value={val.name}
+                                    name='editName'
+                                    value={editName}
                                     placeholder='Edit task'
                                     onChange={changeHandler}
                                     className='mx-2'
@@ -126,11 +127,9 @@ export const TodoList = () => {
                             </div>
                         }   
                         <button onClick={() => deleteTaskHandler(index)}>Delete</button>
-
-
                     </div>
                 ))
             }
-        </div>
+        </div>y
     )
 }
