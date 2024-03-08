@@ -1,28 +1,42 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export const TodoList = () => {
+
+
+    let stored_tasks = JSON.parse(localStorage.getItem('tasks'))
+
     const [val, setVal] = useState({
         name: "",
         complete: false,
 
     }); //name : input tag
-    const [toggle, setToggle] = useState()
 
-    console.log('toggle', toggle)
+    const [toggle, setToggle] = useState() //toggle[index] (edit/save)
+    // console.log('toggle', toggle)
+
     const [editName, setEditName] = useState("")
 
     const [tasks, setTasks] = useState([]) // all the tasks
+    // console.log(tasks)
 
-    console.log(tasks)
+
+
+    useEffect(()=>{
+        localStorage.setItem("stored_tasks", JSON.stringify(tasks));
+    },[tasks])
+    
+    //Adding a task
     const addTaskHandler = (event) => {
         event.preventDefault();
         setTasks([...tasks, val]);
+        if(stored_tasks){
+            stored_tasks.push(val);
+        }
         setVal({ ...val, name: "" });
     }
 
-
+    //Deleting a task
     const deleteTaskHandler = (index) => {
-
         // let arr = []
         // tasks.filter(function(task,i) {
         //     if(i !== index){
@@ -37,6 +51,7 @@ export const TodoList = () => {
         // console.log(index,"arrrrrrrrr")
     }
 
+    //check if the task is complete or not
     const checkTaskHandler = (event, index) => {
         const { checked } = event.target;
         // console.log(event.target.checked,"kar");
@@ -59,17 +74,15 @@ export const TodoList = () => {
             }
         ))
     }
-    
-    // const changeNameHandler =(e) =>{
-    //     setEditName(e.target.value)
-    // }
 
+    //To edit a task
     function editHandler(index){
         setToggle(index);
         setEditName(tasks[index]?.name);
         // console.log(setVal)
     }
 
+    //To save a task
     const saveHandler = () => {
         if (editName !== "") {
             setTasks(tasks.map((task, i) => i === toggle ? 
@@ -81,8 +94,10 @@ export const TodoList = () => {
             setEditName("")
             setVal({ name: "", complete: false });
         }
-        return val
+        return val;
     }
+
+
 
 
     return (
@@ -112,12 +127,12 @@ export const TodoList = () => {
                             name='complete' 
                             value={task.complete} 
                             onChange={(e) => checkTaskHandler(e, index)} 
-                            className='m-1'/>
+                            className='ml-3'/>
 
                         {
                             toggle === index?
                             
-                            <div className='flex items-center gap-3 my-3'>
+                            <div className='flex items-center gap-3 my-2'>
                                 <input
                                     type='text'
                                     name='editName'
@@ -131,17 +146,19 @@ export const TodoList = () => {
                             </div>
 
                             :
-                            <div className='flex items-center '>
+                            <div className='flex items-center'>
                                 <label className='px-3 my-4 w-[18.5rem]' htmlFor='complete'>{task.name}</label>
                                 <button className='px-3 h-[40px] bg-pink-300 rounded-md' onClick={() => { editHandler(index) }}>Edit</button>
                             </div>
                         }   
                         <button className='px-3 h-[40px] bg-red-400 rounded-md' onClick={() => deleteTaskHandler(index)}>Delete</button>
+
                     </div>
                 ))
             }
 
         </div>
+        <p className='text-right w-[80%]'>Total tasks : {tasks.length}</p>
         </div>
     )
 }
