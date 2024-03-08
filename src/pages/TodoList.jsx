@@ -79,22 +79,25 @@ export const TodoList = () => {
 
     return (
         <div className=''>
-            <h1 className=' text-3xl '>TODO List</h1>
-            <form onSubmit={addTaskHandler}>
+            <h1 className=' text-4xl font-semibold '>TODO List</h1>
+            <form onSubmit={addTaskHandler} className='flex gap-1 my-4'>
                 <input
                     type='text'
                     name='name'
                     value={val.name}
                     placeholder='Enter a task'
                     onChange={changeHandler}
-                    className='m-1'
+                    className='p-2 border-red-200 border-2 w-[80%]'
                 /><br />
-                <button className=' bg-pink-500 rounded-md p-2 '>Add Task</button>
+                <button className=' bg-pink-500 rounded-md p-2 my-1 '>Add Task</button>
 
             </form>
+        <div className='border-2 w-[80%]'>
+
+            
             {
                 tasks.map((task, index) => (
-                    <div key={index} className='flex border-2'>
+                    <div key={index} className='flex gap-2 items-center'>
                         <input 
                             type='checkbox' 
                             id='complete' 
@@ -106,30 +109,32 @@ export const TodoList = () => {
                         {
                             toggle === index?
                             
-                            <div className='flex'>
+                            <div className='flex items-center gap-3 my-3'>
                                 <input
                                     type='text'
                                     name='editName'
                                     value={editName}
                                     placeholder='Edit task'
                                     onChange={changeHandler}
-                                    className='mx-2'
+                                    className='px-3 h-[40px] w-full'
                                 /><br />                                
-                                <button className='p-2 bg-pink-300 rounded-md' onClick={() => {saveHandler()}}>Save </button>
-                                <button style={{ margin: "20px" }}  onClick={()=>(setToggle(null))}>Cancel</button>
+                                <button className='px-3 h-[40px] bg-green-300 rounded-md' onClick={() => {saveHandler()}}>Save </button>
+                                <button className='px-3 h-[40px] bg-pink-300 rounded-md'  onClick={()=>(setToggle(null))}>Cancel</button>
                             </div>
 
                             :
-                            <div>
-                                <label htmlFor='complete'>{task.name}</label>
-                                <button style={{ margin: "20px" }} onClick={() => { editHandler(index) }}>Edit</button>
+                            <div className='flex items-center '>
+                                <label className='px-3 my-4 w-[18.5rem]' htmlFor='complete'>{task.name}</label>
+                                <button className='px-3 h-[40px] bg-pink-300 rounded-md' onClick={() => { editHandler(index) }}>Edit</button>
 
                             </div>
                         }   
-                        <button onClick={() => deleteTaskHandler(index)}>Delete</button>
+                        <button className='px-3 h-[40px] bg-red-400 rounded-md' onClick={() => deleteTaskHandler(index)}>Delete</button>
                     </div>
                 ))
             }
-        </div>y
+
+        </div>
+        </div>
     )
 }
