@@ -9,7 +9,7 @@ export const TodoList = () => {
     const [toggle, setToggle] = useState()
 
     console.log('toggle', toggle)
-    const [editName, setEditName] = useState()
+    const [editName, setEditName] = useState("")
 
     const [tasks, setTasks] = useState([]) // all the tasks
 
@@ -59,18 +59,26 @@ export const TodoList = () => {
             }
         ))
     }
+    
+    // const changeNameHandler =(e) =>{
+    //     setEditName(e.target.value)
+    // }
 
     function editHandler(index){
         setToggle(index);
-        setVal({ ...tasks[index] });
+        setEditName(tasks[index]?.name);
         // console.log(setVal)
     }
 
     const saveHandler = () => {
-        if (val.name !== "") {
-            setTasks(tasks.map((task, i) => i === toggle ? val : task));
-            // console.log(toggle)
+        if (editName !== "") {
+            setTasks(tasks.map((task, i) => i === toggle ? 
+            {...task, name:editName}: {...task}));
+            //tasks pe map chalaya, index match karaya fir task to destructure karke name nikal ke vo change kara otherwise vhi task destructure krke return kar dia
+            // console.log(editName,"nameeeee")
+            // console.log(tasks,"takssk")
             setToggle(null);
+            setEditName("")
             setVal({ name: "", complete: false });
         }
         return val
@@ -115,7 +123,7 @@ export const TodoList = () => {
                                     name='editName'
                                     value={editName}
                                     placeholder='Edit task'
-                                    onChange={changeHandler}
+                                    onChange={(e) =>{setEditName(e.target.value)}}
                                     className='px-3 h-[40px] w-full'
                                 /><br />                                
                                 <button className='px-3 h-[40px] bg-green-300 rounded-md' onClick={() => {saveHandler()}}>Save </button>
@@ -126,7 +134,6 @@ export const TodoList = () => {
                             <div className='flex items-center '>
                                 <label className='px-3 my-4 w-[18.5rem]' htmlFor='complete'>{task.name}</label>
                                 <button className='px-3 h-[40px] bg-pink-300 rounded-md' onClick={() => { editHandler(index) }}>Edit</button>
-
                             </div>
                         }   
                         <button className='px-3 h-[40px] bg-red-400 rounded-md' onClick={() => deleteTaskHandler(index)}>Delete</button>
