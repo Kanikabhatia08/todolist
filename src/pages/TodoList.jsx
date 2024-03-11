@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import toast  from 'react-hot-toast';
 
 export const TodoList = () => {
 
@@ -13,6 +14,7 @@ export const TodoList = () => {
 
     const [editName, setEditName] = useState("")
 
+    //storing in local storage
     const storedItems = () => {
         if(stored_tasks){
             return stored_tasks;
@@ -24,15 +26,25 @@ export const TodoList = () => {
     const stored_tasks = JSON.parse(localStorage.getItem("stored_tasks"));
     console.log(stored_tasks,"tskskskk")
     const [tasks, setTasks] = useState(storedItems());
-    localStorage.setItem("stored_tasks", JSON.stringify(tasks));
 
+    useEffect (() =>{
+        localStorage.setItem("stored_tasks", JSON.stringify(tasks));
+    },[tasks])
+  
 
 
     //Adding a task
     const addTaskHandler = (event) => {
         event.preventDefault();     
-        setTasks([...tasks, val]);
-        setVal({ ...val, name: "" });
+        if(val.name.length > 0){
+            console.log(val.name.length,"vallllllllllll")
+            setTasks([...tasks, val]);
+            setVal({ ...val, name: "" });
+        }
+        else{
+            toast.error("Task cannot be empty!")
+        }
+   
     }
 
     //Deleting a task
@@ -60,20 +72,25 @@ export const TodoList = () => {
 
     //check if the task is complete or not
     const checkTaskHandler = (event, index) => {
+        // event.preventDefault();
         const { checked } = event.target;
         // console.log(event.target.checked,"kar");
         setTasks(tasks.map((task, i) => {
             // console.log(i, index, "iiiiiiiii")
             // console.log(task.complete, checked,"checkkkkkkkkkk")
             if (i === index) {
-                task.complete = checked
+                task.complete = checked;
             }
             return task;
         }))
         console.log(tasks);
     }
 
-    
+    const clearHandler = ()=>{
+        setTasks([]);
+        localStorage.setItem("stored_tasks", JSON.stringify([]));
+        alert("all task cleared")
+    }
 
     function changeHandler(event) {
         setVal((prevdata) => (
@@ -119,6 +136,8 @@ export const TodoList = () => {
                     className='p-2 border-red-200 border-2 w-[80%]'
                 /><br />
                 <button className=' bg-pink-500 rounded-md p-2 my-1 '>Add Task</button>
+                <button onClick={clearHandler} className=' bg-pink-500 rounded-md p-2 my-1 '>Clear all</button>
+                
 
             </form>
         <div className='border-2 w-[80%]'>
@@ -132,6 +151,7 @@ export const TodoList = () => {
                             id='complete' 
                             name='complete' 
                             value={task.complete} 
+                            checked={task.complete}
                             onChange={(e) => checkTaskHandler(e, index)} 
                             className='ml-3'/>
 
