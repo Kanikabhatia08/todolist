@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react'
 
 export const TodoList = () => {
 
-
-    let stored_tasks = JSON.parse(localStorage.getItem('tasks'))
-
     const [val, setVal] = useState({
         name: "",
         complete: false,
@@ -16,22 +13,25 @@ export const TodoList = () => {
 
     const [editName, setEditName] = useState("")
 
-    const [tasks, setTasks] = useState([]) // all the tasks
-    // console.log(tasks)
+    const storedItems = () => {
+        if(stored_tasks){
+            return stored_tasks;
+        }
+        else{
+            return [];
+        }
+    };
+    const stored_tasks = JSON.parse(localStorage.getItem("stored_tasks"));
+    console.log(stored_tasks,"tskskskk")
+    const [tasks, setTasks] = useState(storedItems());
+    localStorage.setItem("stored_tasks", JSON.stringify(tasks));
 
 
 
-    useEffect(()=>{
-        localStorage.setItem("stored_tasks", JSON.stringify(tasks));
-    },[tasks])
-    
     //Adding a task
     const addTaskHandler = (event) => {
-        event.preventDefault();
+        event.preventDefault();     
         setTasks([...tasks, val]);
-        if(stored_tasks){
-            stored_tasks.push(val);
-        }
         setVal({ ...val, name: "" });
     }
 
@@ -39,6 +39,13 @@ export const TodoList = () => {
     const deleteTaskHandler = (index) => {
         // let arr = []
         // tasks.filter(function(task,i) {
+        //     if(i !== index){
+        //         console.log(task,"tasssssskkkkkk iiiiiiii")
+        //         arr.push(task)
+        //     }
+        //     return arr;
+        // });
+        // setTasks(arr) // tasks.filter(function(task,i) {
         //     if(i !== index){
         //         console.log(task,"tasssssskkkkkk iiiiiiii")
         //         arr.push(task)
@@ -65,6 +72,8 @@ export const TodoList = () => {
         }))
         console.log(tasks);
     }
+
+    
 
     function changeHandler(event) {
         setVal((prevdata) => (
@@ -96,9 +105,6 @@ export const TodoList = () => {
         }
         return val;
     }
-
-
-
 
     return (
         <div className=''>
